@@ -2,9 +2,16 @@ import { User } from './models/User';
 
 const user = new User({ name: 'Henrique', age: 38 });
 
-console.log(user.get('name'));
-console.log(user.get('age'));
+user.on('event', () => {
+  console.log('event');
+});
+user.on('event', () => {
+  console.log('another event');
+});
+user.on('close', () => {
+  console.log('closing');
+});
 
-user.set({ age: 39 });
-console.log(user.get('name'));
-console.log(user.get('age'));
+console.log(user);
+
+user.trigger('event');
