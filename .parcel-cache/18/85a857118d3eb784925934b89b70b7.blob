@@ -1,7 +1,0 @@
-var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
-_parcelHelpers.defineInteropFlag(exports);
-_parcelHelpers.export(exports, "default", function () {
-  return _nodeIndexJsDefault.default;
-});
-var _nodeIndexJs = require('./node/index.js');
-var _nodeIndexJsDefault = _parcelHelpers.interopDefault(_nodeIndexJs);

@@ -1,9 +1,0 @@
-"use strict";
-var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
-_parcelHelpers.defineInteropFlag(exports);
-var _utilsJs = require('./../utils.js');
-var _utilsJsDefault = _parcelHelpers.interopDefault(_utilsJs);
-function isAxiosError(payload) {
-  return _utilsJsDefault.default.isObject(payload) && payload.isAxiosError === true;
-}
-exports.default = isAxiosError;

@@ -1,6 +1,7 @@
-import axios from 'axios';
+import { User } from './models/User';
+const user = new User({ id: 3 });
+user.fetch();
 
-axios.post('http://localhost:3000/users', {
-  name: 'Henrique',
-  age: 38,
-});
+setTimeout(() => {
+  console.log(user);
+}, 4000);

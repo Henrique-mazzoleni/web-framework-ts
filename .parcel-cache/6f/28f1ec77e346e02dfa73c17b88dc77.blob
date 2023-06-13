@@ -1,6 +1,0 @@
-"use strict";
-var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
-_parcelHelpers.defineInteropFlag(exports);
-var _helpersAxiosURLSearchParamsJs = require('../../../helpers/AxiosURLSearchParams.js');
-var _helpersAxiosURLSearchParamsJsDefault = _parcelHelpers.interopDefault(_helpersAxiosURLSearchParamsJs);
-exports.default = typeof URLSearchParams !== 'undefined' ? URLSearchParams : _helpersAxiosURLSearchParamsJsDefault.default;
