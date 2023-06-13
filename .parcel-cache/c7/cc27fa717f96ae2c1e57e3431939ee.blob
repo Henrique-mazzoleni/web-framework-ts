@@ -1,0 +1,8 @@
+"use strict";
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+function parseProtocol(url) {
+  const match = (/^([-+\w]{1,25})(:?\/\/|:)/).exec(url);
+  return match && match[1] || '';
+}
+exports.default = parseProtocol;

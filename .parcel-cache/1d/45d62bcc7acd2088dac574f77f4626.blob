@@ -1,0 +1,21 @@
+"use strict";
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+var _utilsJs = require('./../utils.js');
+var _utilsJsDefault = _parcelHelpers.interopDefault(_utilsJs);
+var _defaultsIndexJs = require('../defaults/index.js');
+var _defaultsIndexJsDefault = _parcelHelpers.interopDefault(_defaultsIndexJs);
+var _coreAxiosHeadersJs = require('../core/AxiosHeaders.js');
+var _coreAxiosHeadersJsDefault = _parcelHelpers.interopDefault(_coreAxiosHeadersJs);
+function transformData(fns, response) {
+  const config = this || _defaultsIndexJsDefault.default;
+  const context = response || config;
+  const headers = _coreAxiosHeadersJsDefault.default.from(context.headers);
+  let data = context.data;
+  _utilsJsDefault.default.forEach(fns, function transform(fn) {
+    data = fn.call(config, data, headers.normalize(), response ? response.status : undefined);
+  });
+  headers.normalize();
+  return data;
+}
+exports.default = transformData;

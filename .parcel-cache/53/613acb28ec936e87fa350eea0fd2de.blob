@@ -1,0 +1,21 @@
+"use strict";
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+var _utilsJs = require('../utils.js');
+var _utilsJsDefault = _parcelHelpers.interopDefault(_utilsJs);
+var _toFormDataJs = require('./toFormData.js');
+var _toFormDataJsDefault = _parcelHelpers.interopDefault(_toFormDataJs);
+var _platformIndexJs = require('../platform/index.js');
+var _platformIndexJsDefault = _parcelHelpers.interopDefault(_platformIndexJs);
+function toURLEncodedForm(data, options) {
+  return _toFormDataJsDefault.default(data, new _platformIndexJsDefault.default.classes.URLSearchParams(), Object.assign({
+    visitor: function (value, key, path, helpers) {
+      if (_platformIndexJsDefault.default.isNode && _utilsJsDefault.default.isBuffer(value)) {
+        this.append(key, value.toString('base64'));
+        return false;
+      }
+      return helpers.defaultVisitor.apply(this, arguments);
+    }
+  }, options));
+}
+exports.default = toURLEncodedForm;

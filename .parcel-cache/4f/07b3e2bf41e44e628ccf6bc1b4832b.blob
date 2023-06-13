@@ -1,0 +1,14 @@
+"use strict";
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+var _helpersIsAbsoluteURLJs = require('../helpers/isAbsoluteURL.js');
+var _helpersIsAbsoluteURLJsDefault = _parcelHelpers.interopDefault(_helpersIsAbsoluteURLJs);
+var _helpersCombineURLsJs = require('../helpers/combineURLs.js');
+var _helpersCombineURLsJsDefault = _parcelHelpers.interopDefault(_helpersCombineURLsJs);
+function buildFullPath(baseURL, requestedURL) {
+  if (baseURL && !_helpersIsAbsoluteURLJsDefault.default(requestedURL)) {
+    return _helpersCombineURLsJsDefault.default(baseURL, requestedURL);
+  }
+  return requestedURL;
+}
+exports.default = buildFullPath;

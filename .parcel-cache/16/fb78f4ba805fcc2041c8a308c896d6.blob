@@ -1,0 +1,51 @@
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+var _utilsJs = require('../utils.js');
+var _utilsJsDefault = _parcelHelpers.interopDefault(_utilsJs);
+var _httpJs = require('./http.js');
+var _httpJsDefault = _parcelHelpers.interopDefault(_httpJs);
+var _xhrJs = require('./xhr.js');
+var _xhrJsDefault = _parcelHelpers.interopDefault(_xhrJs);
+var _coreAxiosErrorJs = require("../core/AxiosError.js");
+var _coreAxiosErrorJsDefault = _parcelHelpers.interopDefault(_coreAxiosErrorJs);
+const knownAdapters = {
+  http: _httpJsDefault.default,
+  xhr: _xhrJsDefault.default
+};
+_utilsJsDefault.default.forEach(knownAdapters, (fn, value) => {
+  if (fn) {
+    try {
+      Object.defineProperty(fn, 'name', {
+        value
+      });
+    } catch (e) {}
+    Object.defineProperty(fn, 'adapterName', {
+      value
+    });
+  }
+});
+exports.default = {
+  getAdapter: adapters => {
+    adapters = _utilsJsDefault.default.isArray(adapters) ? adapters : [adapters];
+    const {length} = adapters;
+    let nameOrAdapter;
+    let adapter;
+    for (let i = 0; i < length; i++) {
+      nameOrAdapter = adapters[i];
+      if (adapter = _utilsJsDefault.default.isString(nameOrAdapter) ? knownAdapters[nameOrAdapter.toLowerCase()] : nameOrAdapter) {
+        break;
+      }
+    }
+    if (!adapter) {
+      if (adapter === false) {
+        throw new _coreAxiosErrorJsDefault.default(`Adapter ${nameOrAdapter} is not supported by the environment`, 'ERR_NOT_SUPPORT');
+      }
+      throw new Error(_utilsJsDefault.default.hasOwnProp(knownAdapters, nameOrAdapter) ? `Adapter '${nameOrAdapter}' is not available in the build` : `Unknown adapter '${nameOrAdapter}'`);
+    }
+    if (!_utilsJsDefault.default.isFunction(adapter)) {
+      throw new TypeError('adapter is not a function');
+    }
+    return adapter;
+  },
+  adapters: knownAdapters
+};

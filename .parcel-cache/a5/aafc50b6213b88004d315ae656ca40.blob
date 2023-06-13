@@ -1,0 +1,58 @@
+"use strict";
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+var _transformDataJs = require('./transformData.js');
+var _transformDataJsDefault = _parcelHelpers.interopDefault(_transformDataJs);
+var _cancelIsCancelJs = require('../cancel/isCancel.js');
+var _cancelIsCancelJsDefault = _parcelHelpers.interopDefault(_cancelIsCancelJs);
+var _defaultsIndexJs = require('../defaults/index.js');
+var _defaultsIndexJsDefault = _parcelHelpers.interopDefault(_defaultsIndexJs);
+var _cancelCanceledErrorJs = require('../cancel/CanceledError.js');
+var _cancelCanceledErrorJsDefault = _parcelHelpers.interopDefault(_cancelCanceledErrorJs);
+var _coreAxiosHeadersJs = require('../core/AxiosHeaders.js');
+var _coreAxiosHeadersJsDefault = _parcelHelpers.interopDefault(_coreAxiosHeadersJs);
+var _adaptersAdaptersJs = require("../adapters/adapters.js");
+var _adaptersAdaptersJsDefault = _parcelHelpers.interopDefault(_adaptersAdaptersJs);
+/**
+* Throws a `CanceledError` if cancellation has been requested.
+*
+* @param {Object} config The config that is to be used for the request
+*
+* @returns {void}
+*/
+function throwIfCancellationRequested(config) {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested();
+  }
+  if (config.signal && config.signal.aborted) {
+    throw new _cancelCanceledErrorJsDefault.default(null, config);
+  }
+}
+function dispatchRequest(config) {
+  throwIfCancellationRequested(config);
+  config.headers = _coreAxiosHeadersJsDefault.default.from(config.headers);
+  // Transform request data
+  config.data = _transformDataJsDefault.default.call(config, config.transformRequest);
+  if (['post', 'put', 'patch'].indexOf(config.method) !== -1) {
+    config.headers.setContentType('application/x-www-form-urlencoded', false);
+  }
+  const adapter = _adaptersAdaptersJsDefault.default.getAdapter(config.adapter || _defaultsIndexJsDefault.default.adapter);
+  return adapter(config).then(function onAdapterResolution(response) {
+    throwIfCancellationRequested(config);
+    // Transform response data
+    response.data = _transformDataJsDefault.default.call(config, config.transformResponse, response);
+    response.headers = _coreAxiosHeadersJsDefault.default.from(response.headers);
+    return response;
+  }, function onAdapterRejection(reason) {
+    if (!_cancelIsCancelJsDefault.default(reason)) {
+      throwIfCancellationRequested(config);
+      // Transform response data
+      if (reason && reason.response) {
+        reason.response.data = _transformDataJsDefault.default.call(config, config.transformResponse, reason.response);
+        reason.response.headers = _coreAxiosHeadersJsDefault.default.from(reason.response.headers);
+      }
+    }
+    return Promise.reject(reason);
+  });
+}
+exports.default = dispatchRequest;
