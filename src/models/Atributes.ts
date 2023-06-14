@@ -8,4 +8,8 @@ export class Atributes<T extends object> {
   set(update: T): void {
     Object.assign(this.data, update);
   }
+
+  getAll(): T {
+    return this.data;
+  }
 }
